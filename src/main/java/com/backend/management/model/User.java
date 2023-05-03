@@ -27,7 +27,6 @@ public class User implements Serializable {
     @JsonIgnore
     private boolean enabled;
 
-
     public User() {}
 
 
@@ -82,6 +81,7 @@ public class User implements Serializable {
 
         @JsonProperty("enabled")
         private boolean enabled;
+
 
 
         public Builder setUsername(String username) {
