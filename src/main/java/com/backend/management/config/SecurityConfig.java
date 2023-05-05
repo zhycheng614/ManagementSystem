@@ -39,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/moveOut").hasAuthority("ROLE_MANAGER")
                 .antMatchers("/moveOutAndAssignNewOwner").hasAuthority("ROLE_MANAGER")
                 .antMatchers("/getFlatmates").hasAuthority("ROLE_MANAGER")
+                .antMatchers("/reservation").permitAll()
+                .antMatchers("reservation/*").permitAll()
                 .anyRequest().authenticated().and().csrf().disable();
 
         http
