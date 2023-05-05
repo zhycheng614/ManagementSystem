@@ -3,9 +3,7 @@ package com.backend.management.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 
@@ -15,6 +13,7 @@ import java.io.Serializable;
 public class Amenity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int amenity_id;
     private String amenity_name;
     private int amenity_capacity;

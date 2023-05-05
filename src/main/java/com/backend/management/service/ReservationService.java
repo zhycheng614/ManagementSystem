@@ -27,6 +27,7 @@ public class ReservationService {
         return reservationRepository.findByRequester(username);
     }
 
+    //1.get reservation by id
     public Reservation findByIdAndUsername(int reservation_id, User username) throws ReservationNotFoundException {
         Reservation reservation = reservationRepository.findByReservationAndRequester(reservation_id, username);
         if(reservation == null){
@@ -35,11 +36,13 @@ public class ReservationService {
         return reservation;
     }
 
+    //2.Add reservation
     @Transactional
     public void add(Reservation reservation) throws ReservationCollisionException {
         reservationRepository.save(reservation);
     }
 
+    //3.delete reservation by id
     @Transactional //(Isolation = Isolation.SERIALIZABLE)
     public void delete(int reservation_id, String username) throws ReservationNotFoundException{
         User user = new User.Builder().setUsername(username).build();
