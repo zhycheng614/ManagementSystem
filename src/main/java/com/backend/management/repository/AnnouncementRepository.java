@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
-//    List<Announcement> findByManager(User managerId);
-    //Announcement findByIdAndHost(Long id, User manager);
+    List<Announcement> findByManagerId(User managerId);
+    Announcement findByIdAndManagerId(Long id, User managerId);
 }

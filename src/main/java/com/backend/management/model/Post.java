@@ -2,14 +2,15 @@ package com.backend.management.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "announcements")
-@JsonDeserialize(builder = Announcement.Builder.class)
-public class Announcement implements Serializable {
+@Table(name = "posts")
+@JsonDeserialize(builder = Post.Builder.class)
+public class Post implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,36 +19,40 @@ public class Announcement implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "manager")
-    private User managerId;
+    @JoinColumn(name = "tenant")
+    private User tenantId;
 
     @JsonProperty("title")
-    private String announcementTitle;
+    private String postTitle;
+
+    private String category;
     private String content;
     private LocalDate time;
-    private String priority;
 
-
-    public Announcement() {}
-    private Announcement(Builder builder) {
+    public Post() {}
+    private Post(Builder builder) {
         this.id = builder.id;
-        this.managerId = builder.managerId;
-        this.announcementTitle = builder.announcementTitle;;
+        this.tenantId = builder.tenantId;
+        this.postTitle = builder.postTitle;
+        this.category = builder.category;
         this.content = builder.content;
         this.time = builder.time;
-        this.priority = builder.priority;
     }
 
     public Long getId() {
         return id;
     }
 
-    public User getManagerId() {
-        return managerId;
+    public User getTenantId() {
+        return tenantId;
     }
 
-    public String getAnnouncementTitle() {
-        return announcementTitle;
+    public String getPostTitle() {
+        return postTitle;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public String getContent() {
@@ -58,20 +63,18 @@ public class Announcement implements Serializable {
         return time;
     }
 
-    public String getPriority() {
-        return priority;
-    }
-
     public static class Builder {
-
         @JsonProperty("id")
         private Long id;
 
-        @JsonProperty("manager")
-        private User managerId;
+        @JsonProperty("tenant")
+        private User tenantId;
 
         @JsonProperty("title")
-        private String announcementTitle;
+        private String postTitle;
+
+        @JsonProperty("category")
+        private String category;
 
         @JsonProperty("content")
         private String content;
@@ -79,21 +82,23 @@ public class Announcement implements Serializable {
         @JsonProperty("time")
         private LocalDate time;
 
-        @JsonProperty("priority")
-        private String priority;
-
         public Builder setId(Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder setManagerId(User managerId) {
-            this.managerId = managerId;
+        public Builder setTenantId(User tenantId) {
+            this.tenantId = tenantId;
             return this;
         }
 
-        public Builder setAnnouncementTitle(String announcementTitle) {
-            this.announcementTitle = announcementTitle;
+        public Builder setPostTitle(String postTitle) {
+            this.postTitle = postTitle;
+            return this;
+        }
+
+        public Builder setCategory(String category) {
+            this.category = category;
             return this;
         }
 
@@ -107,13 +112,8 @@ public class Announcement implements Serializable {
             return this;
         }
 
-        public Builder setPriority(String priority) {
-            this.priority = priority;
-            return this;
-        }
-
-        public Announcement build() {
-            return new Announcement(this);
+        public Post build() {
+            return new Post(this);
         }
     }
 }
