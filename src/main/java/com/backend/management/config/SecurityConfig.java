@@ -41,12 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 permitAll().antMatchers(HttpMethod.POST, "/authenticate/*").permitAll()
                 .antMatchers("/orders").permitAll()
                 .antMatchers("/orders/*").permitAll()
-                .antMatchers("/announcements").permitAll()
+                .antMatchers("/announcements").hasAnyAuthority("ROLE_TENANT", "ROLE_MANAGER")
                 .antMatchers("/announcement/*").hasAuthority("ROLE_MANAGER")
                 .antMatchers("/announcement").hasAuthority("ROLE_MANAGER")
                 .antMatchers("/post").hasAuthority("ROLE_TENANT")
                 .antMatchers("/post/*").hasAuthority("ROLE_TENANT")
-                .antMatchers("/posts").hasAuthority("ROLE_TENANT, ROLE_MANAGER")
+                .antMatchers("/posts").hasAnyAuthority("ROLE_TENANT", "ROLE_MANAGER")
                 .anyRequest().authenticated().and().csrf().disable();
 
         http
