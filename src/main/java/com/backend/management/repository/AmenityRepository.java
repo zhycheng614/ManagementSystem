@@ -16,6 +16,10 @@ public interface AmenityRepository extends JpaRepository<Amenity, Long> {
     List<Amenity> findByAmenity(Amenity amenity_id);
 
 
+    @Query(value = "SELECT amen FROM Amenity amen")
+    List<Amenity> findByAmenityName();
+
+
     //@Query(value = "SELECT amen FROM Amenity amen WHERE amen.amenity_id = :id AND amen = ")
     //Amenity findByIdAndUsername(Long id, Reservation reservation); //for deletion
 }

@@ -20,11 +20,17 @@ public class Reservation implements Serializable {
     @JsonProperty("reservationName")
     private String reservation_name;
     @ManyToOne
-    @JoinColumn(name = "amenity_id")
-    private Amenity amenity_id;
+    @JoinColumn(name = "amenity")
+    private Amenity amenity;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user")
     private User requester_id;
+
+    @JsonProperty("userId")
+    private String user_id;
+
+    @JsonProperty("amenityId")
+    private String amenity_id;
 
     @JsonProperty("guestCount")
     private int guest_count;
@@ -39,12 +45,24 @@ public class Reservation implements Serializable {
     private Reservation(Builder builder){
         this.reservation_id = builder.reservation_id;
         this.reservation_name = builder.reservation_name;
-        this.amenity_id = builder.amenity_id;
+        this.amenity = builder.amenity;
         this.requester_id = builder.requester_id;
         this.guest_count = builder.guest_count;
         this.date = builder.date;
         this.start_time = builder.start_time;
         this.end_time = builder.end_time;
+        this.user_id = builder.userId;
+        this.amenity_id = builder.amenityId;
+        this.end_time = builder.end_time;
+
+    }
+
+    public String getAmenity_id() {
+        return amenity_id;
+    }
+
+    public String getUser_id() {
+        return user_id;
     }
 
     public int getReservationID(){
@@ -54,7 +72,7 @@ public class Reservation implements Serializable {
         return reservation_name;
     }
     public Amenity getAmenityID(){
-        return amenity_id;
+        return amenity;
     }
 //     public User setUser(User username){
 //        this.username = username;
@@ -74,14 +92,17 @@ public class Reservation implements Serializable {
         return end_time;
     }
 
+    public void setDate(LocalDate date){
+        this.date = date;
+    }
 
     public static class Builder{
         @JsonProperty("reservationId")
         private int reservation_id;
         @JsonProperty("reservationName")
         private String reservation_name;
-        @JsonProperty("amenityId")
-        private Amenity amenity_id;
+        @JsonProperty("amenity")
+        private Amenity amenity;
         @JsonProperty("requesterId")
         private User requester_id;
         @JsonProperty("guestCount")
@@ -92,8 +113,10 @@ public class Reservation implements Serializable {
         private int start_time;
         @JsonProperty("endTime")
         private int end_time;
-        private Amenity amenity;
-
+        @JsonProperty("userId")
+        private String userId;
+        @JsonProperty("amenityId")
+        private String amenityId;
         public Builder setReservationName(int reservation_id) {
             this.reservation_id = reservation_id;
             return this;
@@ -106,9 +129,16 @@ public class Reservation implements Serializable {
             this.requester_id = requester_id;
             return this;
         }
-
+        public Builder setUserId(String userId){
+            this.userId = userId;
+            return this;
+        }
+        public Builder setAmenityId(String amenityId){
+            this.amenityId = amenityId;
+            return this;
+        }
         public Builder setAmenityID(Amenity amenity_id){
-            this.amenity_id = amenity_id;
+            this.amenity = amenity_id;
             return this;
         }
         public Builder setGuestCount(int guest_count){

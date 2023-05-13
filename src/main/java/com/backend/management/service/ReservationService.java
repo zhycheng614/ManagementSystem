@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Isolation;
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -24,12 +25,12 @@ public class ReservationService {
     }
 
     public List<Reservation> listByUser(User username){
-        return reservationRepository.findByRequester(username);
+        return reservationRepository.findByRequester(username.getUsername());
     }
 
     //1.get reservation by id
     public Reservation findByIdAndUsername(int reservation_id, User username) throws ReservationNotFoundException {
-        Reservation reservation = reservationRepository.findByReservationAndRequester(reservation_id, username);
+        Reservation reservation = reservationRepository.findByReservationAndRequester(reservation_id, username.getUsername());
         if(reservation == null){
             throw new ReservationNotFoundException("Reservation not found");
         }
@@ -44,12 +45,10 @@ public class ReservationService {
 
     //3.delete reservation by id
     @Transactional //(Isolation = Isolation.SERIALIZABLE)
-    public void delete(int reservation_id, String username) throws ReservationNotFoundException{
-        User user = new User.Builder().setUsername(username).build();
-        Reservation reservation = reservationRepository.findByReservationAndRequester(reservation_id, user); //username?
-        if(reservation == null){
-            throw new ReservationNotFoundException("Reservation not found");
-        }
-        reservationRepository.delete(reservation);
+    public void delete(Integer reservation_id, String username) throws ReservationNotFoundException{
+//        User user = new User.Builder().setUsername(username).build();
+//        Reservation reservation = reservationRepository.findByReservationAndRequester(reservation_id, user); //username?
+
+        reservationRepository.deleteByReservation_id(reservation_id);
     }
 }

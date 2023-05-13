@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -46,9 +47,11 @@ public class ReservationController {
         return reservationService.findByIdAndUsername(reservation_id, user);
     }
 
+
     //4. add reservation
     @PostMapping("/reservation")
     public void addReservation(@RequestBody Reservation reservation){
+        reservation.setDate(LocalDate.now());
         reservationService.add(reservation);
     }
 
@@ -56,7 +59,7 @@ public class ReservationController {
     @DeleteMapping("/reservation")
     public void deleteReservation(
             @RequestParam(name = "username") String username,
-            @RequestParam(value = "reservation_id") int reservation_id
+            @RequestParam(value = "reservation_id") Integer reservation_id
     ) throws ReservationNotFoundException {
         reservationService.delete(reservation_id, username);
     }
