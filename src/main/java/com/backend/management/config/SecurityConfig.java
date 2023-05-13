@@ -39,9 +39,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/moveOut").hasAuthority("ROLE_MANAGER")
                 .antMatchers("/moveOutAndAssignNewOwner").hasAuthority("ROLE_MANAGER")
                 .antMatchers("/getFlatmates").hasAuthority("ROLE_MANAGER")
+<<<<<<< HEAD
                 .antMatchers("/reservation").hasAnyAuthority("ROLE_TENANT","ROLE_MANAGER")
                 .antMatchers("/reservation/*").hasAnyAuthority("ROLE_TENANT","ROLE_MANAGER")
                 .antMatchers("/reservations").hasAnyAuthority("ROLE_TENANT","ROLE_MANAGER")
+=======
+                .antMatchers("/reservation").hasAuthority("ROLE_MANAGER")
+                .antMatchers("reservation/*").hasAuthority("ROLE_MANAGER")
+>>>>>>> cab2345f4f97c98ec045473891fd2c638c46ff45
                 .anyRequest().authenticated().and().csrf().disable();
 
         http
