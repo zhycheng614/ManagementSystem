@@ -25,7 +25,7 @@ public class Announcement implements Serializable {
     private String announcementTitle;
     private String content;
     private LocalDate time;
-    private String priority;
+    private Boolean priority;
 
 
     public Announcement() {}
@@ -58,7 +58,7 @@ public class Announcement implements Serializable {
         return time;
     }
 
-    public String getPriority() {
+    public Boolean getPriority() {
         return priority;
     }
 
@@ -80,7 +80,7 @@ public class Announcement implements Serializable {
         private LocalDate time;
 
         @JsonProperty("priority")
-        private String priority;
+        private Boolean priority;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -107,7 +107,7 @@ public class Announcement implements Serializable {
             return this;
         }
 
-        public Builder setPriority(String priority) {
+        public Builder setPriority(Boolean priority) {
             this.priority = priority;
             return this;
         }

@@ -24,11 +24,10 @@ public class AnnouncementController {
     public void addAnnouncement(
             @RequestParam("title") String announcementTitle,
             @RequestParam("content") String content,
-            @RequestParam("priority") String priority,
-            @RequestParam("time") String time,
+            @RequestParam("priority") Boolean priority,
             Principal principal) {
 
-        LocalDate announcementDate = LocalDate.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate announcementDate = LocalDate.now();
 
         if(announcementDate.isBefore(LocalDate.now())) {
             throw new InvalidAnnouncementDateException("Invalid date for announcement");
