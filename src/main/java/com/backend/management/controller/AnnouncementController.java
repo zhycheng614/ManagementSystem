@@ -29,10 +29,6 @@ public class AnnouncementController {
 
         LocalDate announcementDate = LocalDate.now();
 
-        if(announcementDate.isBefore(LocalDate.now())) {
-            throw new InvalidAnnouncementDateException("Invalid date for announcement");
-        }
-
         Announcement announcement = new Announcement.Builder()
                 .setAnnouncementTitle(announcementTitle)
                 .setContent(content)

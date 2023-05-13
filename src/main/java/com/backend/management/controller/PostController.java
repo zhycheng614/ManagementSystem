@@ -30,14 +30,10 @@ public class PostController {
             @RequestParam("category") String category,
             @RequestParam("content") String content,
             @RequestParam("title") String postTitle,
-            @RequestParam("time") String time,
             Principal principal) {
 
-        LocalDate postDate = LocalDate.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate postDate = LocalDate.now();
 
-        if(postDate.isBefore(LocalDate.now())) {
-            throw new InvalidPostDateException("Invalid date for post");
-        }
 
         Post post = new Post.Builder()
                 .setCategory(category)
