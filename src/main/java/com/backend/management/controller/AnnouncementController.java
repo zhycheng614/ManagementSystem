@@ -21,23 +21,19 @@ public class AnnouncementController {
 
     //1.add announcement
     @PostMapping(value = "/announcement")
-    public void addAnnouncement(
-            @RequestParam("title") String announcementTitle,
-            @RequestParam("content") String content,
-            @RequestParam("priority") Boolean priority,
-            Principal principal) {
+    public void addAnnouncement(@RequestBody Announcement announcement, Principal principal) {
 
         LocalDate announcementDate = LocalDate.now();
 
-        Announcement announcement = new Announcement.Builder()
-                .setAnnouncementTitle(announcementTitle)
-                .setContent(content)
+        Announcement announce = new Announcement.Builder()
+                .setAnnouncementTitle(announcement.getAnnouncementTitle())
+                .setContent(announcement.getContent())
                 .setTime(announcementDate)
-                .setPriority(priority)
+                .setPriority(announcement.getPriority())
                 .setManagerId(new User.Builder().setUsername(principal.getName()).build())
                 .build();
 
-        announcementService.add(announcement);
+        announcementService.add(announce);
     }
 
 

@@ -26,24 +26,19 @@ public class PostController {
 
     //1.add post
     @PostMapping(value = "/post")
-    public void addPost(
-            @RequestParam("category") String category,
-            @RequestParam("content") String content,
-            @RequestParam("title") String postTitle,
-            Principal principal) {
+    public void addPost(@RequestBody Post post, Principal principal) {
 
         LocalDate postDate = LocalDate.now();
 
-
-        Post post = new Post.Builder()
-                .setCategory(category)
-                .setContent(content)
-                .setPostTitle(postTitle)
+        Post post1 = new Post.Builder()
+                .setCategory(post.getCategory())
+                .setContent(post.getContent())
+                .setPostTitle(post.getPostTitle())
                 .setTime(postDate)
                 .setTenantId(new User.Builder().setUsername(principal.getName()).build())
                 .build();
 
-        postService.add(post);
+        postService.add(post1);
     }
 
     //2.get post by tenant
