@@ -2,6 +2,7 @@ package com.backend.management.controller;
 
 import com.backend.management.exception.InvalidAnnouncementDateException;
 import com.backend.management.exception.InvalidPostDateException;
+import com.backend.management.exception.MaintenanceAlreadyExistException;
 import com.backend.management.exception.UserAlreadyExistException;
 import com.backend.management.exception.UserNotExistException;
 import org.springframework.http.HttpStatus;
@@ -34,5 +35,8 @@ public class OwnExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-
+    @ExceptionHandler(MaintenanceAlreadyExistException.class)
+    public final ResponseEntity<String>handleMaintenanceAlreadyExistExceptions(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }
