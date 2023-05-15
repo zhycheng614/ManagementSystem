@@ -5,6 +5,7 @@ import com.backend.management.model.User;
 import com.backend.management.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -16,19 +17,19 @@ public class OrderController {
     }
 
     @GetMapping(value = "/orders")
-    public List<Order> listOrder(@RequestParam(name = "tenant") String tenantName) {
-        return orderService.listByTenant(tenantName);
+    public List<Order> listOrder(Principal principal) {
+        return orderService.listByTenant(principal.getName());
     }
     @GetMapping(value = "/orders/orderClaimed")
-    public List<Order> listOrderClaimed(@RequestBody String providerName) {
-        return orderService.listByProvider(providerName);
+    public List<Order> listOrderClaimed(Principal principal) {
+        return orderService.listByProvider(principal.getName());
     }
 
     @GetMapping(value = "/orders/id")
     public Order getOrder(
             @RequestParam(name = "order_id") Long OrderId,
-            @RequestParam(name = "tenant") String tenantName) {
-        return orderService.findByIdAndTenant(OrderId, tenantName);
+            Principal principal) {
+        return orderService.findByIdAndTenant(OrderId, principal.getName());
     }
 
     @PostMapping("/orders")
@@ -37,8 +38,8 @@ public class OrderController {
     }
 
     @PostMapping("/orders/claim")
-    public void claimTask(@RequestBody String username, @RequestParam(name = "order_id") Long OrderId) {
-        orderService.claimTask(OrderId,username);
+    public void claimTask(Principal principal, @RequestParam(name = "order_id") Long OrderId) {
+        orderService.claimTask(OrderId,principal.getName());
     }
 
     @PostMapping("/orders/complete")
@@ -50,8 +51,8 @@ public class OrderController {
     @DeleteMapping("/orders")
     public void deleteOrder(
             @RequestParam(name = "order_id") Long OrderId,
-            @RequestParam(name = "tenant") String tenantName) {
-        orderService.delete(OrderId, tenantName);
+            Principal principal) {
+        orderService.delete(OrderId, principal.getName());
     }
 
     @GetMapping(value = "/orders/findAll")

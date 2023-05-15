@@ -16,6 +16,7 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String title;
     private String issueDescription;
     private String location;
     @JsonProperty("tenant_number")
@@ -23,6 +24,7 @@ public class Order implements Serializable {
     private String status;
 
     private String providerNote;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User tenant;
@@ -43,6 +45,7 @@ public class Order implements Serializable {
 
     private Order(Builder builder){
         this.id = builder.id;
+        this.title = builder.title;
         this.issueDescription = builder.issueDescription;
         this.location = builder.location;
         this.tenantNumber = builder.tenantNumber;
@@ -111,6 +114,9 @@ public class Order implements Serializable {
         @JsonProperty("issueDescription")
         private String issueDescription;
 
+        @JsonProperty("title")
+        private String title;
+
         @JsonProperty("location")
         private String location;
 
@@ -141,7 +147,10 @@ public class Order implements Serializable {
             this.id = id;
             return this;
         }
-
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
         public Builder setDescription(String issueDescription) {
             this.issueDescription = issueDescription;
             return this;
