@@ -54,9 +54,9 @@ public class OrderService {
 
     }
     @Transactional
-    public void claimTask(Long id, String provider_username) {
+    public void claimTask(Long id, String provider_username, String note) {
         Order task = orderRepository.getById(id);
-        task.setStatus("In Progress");
+        task.setStatus(note);
         task.setProvider(provider_username);
         task.setProcessedDate(LocalDate.now());
     }
@@ -71,6 +71,14 @@ public class OrderService {
 
     public List<Order> listByProvider(String username){
         return orderRepository.findAllByProvider(username);
+    }
+
+    public List<Order> listByManager(String username){
+        return orderRepository.findAllByManager(username);
+    }
+
+    public List<Order> listCompleteByProvider(String username){
+        return orderRepository.findAllCompleteByProvider(username,"complete");
     }
     // manager p0
     public List<Order> listOfAll(){

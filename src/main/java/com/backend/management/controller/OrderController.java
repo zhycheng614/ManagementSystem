@@ -24,6 +24,11 @@ public class OrderController {
     public List<Order> listOrderClaimed(Principal principal) {
         return orderService.listByProvider(principal.getName());
     }
+    // get all completed by provider
+    @GetMapping(value = "/orders/orderCompleted")
+    public List<Order> listOrderCompletedByProvider(Principal principal) {
+        return orderService.listCompleteByProvider(principal.getName());
+    }
 
     @GetMapping(value = "/orders/id")
     public Order getOrder(
@@ -38,8 +43,8 @@ public class OrderController {
     }
 
     @PostMapping("/orders/claim")
-    public void claimTask(Principal principal, @RequestParam(name = "order_id") Long OrderId) {
-        orderService.claimTask(OrderId,principal.getName());
+    public void claimTask(Principal principal, @RequestParam(name = "order_id") Long OrderId, String note) {
+        orderService.claimTask(OrderId,principal.getName(),note);
     }
 
     @PostMapping("/orders/complete")
@@ -59,6 +64,13 @@ public class OrderController {
     public List<Order> listOfAllOrder(){
         return orderService.listOfAll();
     }
+
+    @GetMapping(value = "/orders/findAllByManager")
+    public List<Order> listOfAllManager(Principal principal){
+        return orderService.listByManager(principal.getName());
+    }
+
+
 
 
     @GetMapping(value = "/orders/findAllUnclaimed")

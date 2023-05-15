@@ -16,13 +16,15 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @JsonProperty("title")
     private String title;
     private String issueDescription;
     private String location;
     @JsonProperty("tenant_number")
     private Long tenantNumber;
+    @JsonProperty("status")
     private String status;
-
+    @JsonProperty("message")
     private String providerNote;
 
     @ManyToOne
@@ -31,6 +33,8 @@ public class Order implements Serializable {
 
 
     private String provider;
+
+    private String manager;
 
     @JsonProperty("submit_date")
     private LocalDate submittedDate;
@@ -50,6 +54,7 @@ public class Order implements Serializable {
         this.location = builder.location;
         this.tenantNumber = builder.tenantNumber;
         this.tenant = builder.tenant;
+        this.manager = builder.manager;
         this.status = builder.status;
         this.providerNote = builder.providerNote;
         this.provider = builder.provider;
@@ -117,13 +122,16 @@ public class Order implements Serializable {
         @JsonProperty("title")
         private String title;
 
+        @JsonProperty("manager")
+        private String manager;
+
         @JsonProperty("location")
         private String location;
 
         @JsonProperty("tenant_number")
         private Long tenantNumber;
 
-        @JsonProperty("tenant")
+        @JsonProperty("user")
         private User tenant;
         @JsonProperty("status")
         private String status;
@@ -198,6 +206,11 @@ public class Order implements Serializable {
 
         public Builder setSubmittedDate(LocalDate submit_date) {
             this.submittedDate = submit_date;
+            return this;
+        }
+
+        public Builder setManager(String manager) {
+            this.manager = manager;
             return this;
         }
 
