@@ -34,7 +34,7 @@ public class OrderController {
         return orderService.listByProvider(principal.getName());
     }
     @PostMapping("/orders/claim")
-    public void claimTask(Principal principal, @RequestParam(name = "order_id") Long OrderId, String note) {
+    public void claimTask(Principal principal, @RequestParam(name = "order_id") Long OrderId, @RequestBody String note) {
         orderService.claimTask(OrderId,principal.getName(),note);
     }
     @PostMapping("/orders/complete")
