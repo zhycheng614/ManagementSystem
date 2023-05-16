@@ -16,12 +16,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
     @Query("SELECT u FROM Order u WHERE u.status = :status")
     List<Order> findAllByStatus(@Param("status") String status);
 
-    @Query("SELECT v FROM Order v WHERE v.provider = :provider")
-    List<Order> findAllByProvider(@Param("provider") String provider);
-
-    @Query("SELECT z FROM Order z WHERE z.username= :username")
-    List<Order> findAllByManager(@Param("username") String username);
-
-    @Query("SELECT w FROM Order w WHERE w.provider = :provider AND w.status = :status")
-    List<Order> findAllCompleteByProvider(@Param("provider") String provider,@Param("status") String status);
+    List<Order> findAllByProvider(User user);
+//    @Query("SELECT u FROM Order u WHERE u.status = :status")
+//    List<Order> findAllCompleteByProvider(User user,String status);
 }

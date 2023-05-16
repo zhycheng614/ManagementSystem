@@ -20,8 +20,8 @@ public class Order implements Serializable {
     private String title;
     private String issueDescription;
     private String location;
-    @JsonProperty("tenant_number")
-    private Long tenantNumber;
+//    @JsonProperty("tenant_number")
+//    private Long tenantNumber;
     @JsonProperty("status")
     private String status;
     @JsonProperty("message")
@@ -31,10 +31,10 @@ public class Order implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "provider_id")
+    private User provider;
 
-    private String provider;
-
-    private String username;
 
     @JsonProperty("submit_date")
     private LocalDate submittedDate;
@@ -52,9 +52,8 @@ public class Order implements Serializable {
         this.title = builder.title;
         this.issueDescription = builder.issueDescription;
         this.location = builder.location;
-        this.tenantNumber = builder.tenantNumber;
+//        this.tenantNumber = builder.tenantNumber;
         this.user = builder.user;
-        this.username = builder.username;
         this.status = builder.status;
         this.providerNote = builder.providerNote;
         this.provider = builder.provider;
@@ -83,16 +82,16 @@ public class Order implements Serializable {
         this.user = user;
     }
 
-    public Long getTenantNumber() {
-        return tenantNumber;
-    }
+//    public Long getTenantNumber() {
+//        return tenantNumber;
+//    }
 
 
     public void setProviderNote(String providerNote) {
         this.providerNote = providerNote;
     }
 
-    public void setProvider(String provider) {
+    public void setProvider(User provider) {
         this.provider = provider;
     }
 
@@ -116,9 +115,7 @@ public class Order implements Serializable {
         this.location = location;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+
 
     public static class Builder {
 
@@ -149,7 +146,7 @@ public class Order implements Serializable {
         private String providerNote;
 
         @JsonProperty("provider")
-        private String provider;
+        private User provider;
 
         @JsonProperty("process_date")
         private LocalDate processDate;
@@ -198,7 +195,7 @@ public class Order implements Serializable {
             return this;
         }
 
-        public Builder setProvider(String provider){
+        public Builder setProvider(User provider){
             this.provider = provider;
             return this;
         }

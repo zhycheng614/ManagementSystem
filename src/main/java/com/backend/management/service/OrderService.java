@@ -9,6 +9,7 @@ import com.backend.management.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class OrderService {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
     }
+    // tenant service
     public List<Order> listByTenant(String username){
         return orderRepository.findByUser(new User.Builder().setUsername(username).build());
     }
@@ -31,10 +33,10 @@ public class OrderService {
         }
         return order;
     }
+
+
+    // add order
     public void add(Order order){
-        if(orderRepository.existsById(order.getTenantNumber())){
-            throw new MaintenanceAlreadyExistException("Maintenance already exist");
-        }
         order.setStatus("submitted");
         order.setSubmittedDate(LocalDate.now());
         orderRepository.save(order);
@@ -48,6 +50,8 @@ public class OrderService {
         orderRepository.deleteById(orderId);
     }
 
+
+
 //  provider p0 feature
     public List<Order> listOfUnclaimed(){
         return orderRepository.findAllByStatus("submitted");
@@ -56,8 +60,9 @@ public class OrderService {
     @Transactional
     public void claimTask(Long id, String provider_username, String note) {
         Order task = orderRepository.getById(id);
-        task.setStatus(note);
-        task.setProvider(provider_username);
+        task.setStatus("In Progress");
+        task.setProviderNote(note);
+        task.setProvider(new User.Builder().setUsername(provider_username).build());
         task.setProcessedDate(LocalDate.now());
     }
     @Transactional
@@ -67,18 +72,20 @@ public class OrderService {
         task.setProviderNote("it's fixed!");
         task.setCompleteDate(LocalDate.now());
     }
-
-
     public List<Order> listByProvider(String username){
-        return orderRepository.findAllByProvider(username);
+        return orderRepository.findAllByProvider(new User.Builder().setUsername(username).build());
     }
+//    public List<Order> listCompleteByProvider(String username){
+//        return orderRepository.findAllCompleteByProvider(new User.Builder().setUsername(username).build(),"complete");
+//    }
 
+
+
+
+
+    // list by manager
     public List<Order> listByManager(String username){
-        return orderRepository.findAllByManager(username);
-    }
-
-    public List<Order> listCompleteByProvider(String username){
-        return orderRepository.findAllCompleteByProvider(username,"complete");
+        return orderRepository.findByUser(new User.Builder().setUsername(username).build());
     }
     // manager p0
     public List<Order> listOfAll(){

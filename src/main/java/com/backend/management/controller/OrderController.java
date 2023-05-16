@@ -16,27 +16,41 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    // tenant only feature
     @GetMapping(value = "/orders")
     public List<Order> listOrder(Principal principal) {
         return orderService.listByTenant(principal.getName());
     }
+
+
+
+    //provider feature
+//    @GetMapping(value = "/orders/orderCompleted")
+//    public List<Order> listOrderCompletedByProvider(Principal principal) {
+//        return orderService.listCompleteByProvider(principal.getName());
+//    }
     @GetMapping(value = "/orders/orderClaimed")
     public List<Order> listOrderClaimed(Principal principal) {
         return orderService.listByProvider(principal.getName());
     }
-    // get all completed by provider
-    @GetMapping(value = "/orders/orderCompleted")
-    public List<Order> listOrderCompletedByProvider(Principal principal) {
-        return orderService.listCompleteByProvider(principal.getName());
+    @PostMapping("/orders/claim")
+    public void claimTask(Principal principal, @RequestParam(name = "order_id") Long OrderId, String note) {
+        orderService.claimTask(OrderId,principal.getName(),note);
+    }
+    @PostMapping("/orders/complete")
+    public void completeTask(@RequestParam(name = "order_id") Long OrderId) {
+        orderService.completeTask(OrderId);
+    }
+    @GetMapping(value = "/orders/findAllUnclaimed")
+    public List<Order> listOfAllUnclaimed(){
+        return orderService.listOfUnclaimed();
     }
 
-    @GetMapping(value = "/orders/id")
-    public Order getOrder(
-            @RequestParam(name = "order_id") Long OrderId,
-            Principal principal) {
-        return orderService.findByIdAndTenant(OrderId, principal.getName());
-    }
 
+
+
+
+    // add order
     @PostMapping("/orders")
     public void addOrder(@RequestBody Order order, Principal principal) {
         Order newOrder = new Order.Builder()
@@ -47,18 +61,13 @@ public class OrderController {
                 .build();
         orderService.add(newOrder);
     }
-
-    @PostMapping("/orders/claim")
-    public void claimTask(Principal principal, @RequestParam(name = "order_id") Long OrderId, String note) {
-        orderService.claimTask(OrderId,principal.getName(),note);
+    //get order
+    @GetMapping(value = "/orders/id")
+    public Order getOrder(
+            @RequestParam(name = "order_id") Long OrderId,
+            Principal principal) {
+        return orderService.findByIdAndTenant(OrderId, principal.getName());
     }
-
-    @PostMapping("/orders/complete")
-    public void completeTask(@RequestParam(name = "order_id") Long OrderId) {
-        orderService.completeTask(OrderId);
-    }
-
-
     @DeleteMapping("/orders")
     public void deleteOrder(
             @RequestParam(name = "order_id") Long OrderId,
@@ -66,6 +75,10 @@ public class OrderController {
         orderService.delete(OrderId, principal.getName());
     }
 
+
+
+
+    // manager feature
     @GetMapping(value = "/orders/findAll")
     public List<Order> listOfAllOrder(){
         return orderService.listOfAll();
@@ -76,11 +89,4 @@ public class OrderController {
         return orderService.listByManager(principal.getName());
     }
 
-
-
-
-    @GetMapping(value = "/orders/findAllUnclaimed")
-    public List<Order> listOfAllUnclaimed(){
-        return orderService.listOfUnclaimed();
-    }
 }
