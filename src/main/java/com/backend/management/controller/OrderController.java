@@ -38,8 +38,14 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
-    public void addOrder(@RequestBody Order order) {
-        orderService.add(order);
+    public void addOrder(@RequestBody Order order, Principal principal) {
+        Order newOrder = new Order.Builder()
+                .setDescription(order.getIssueDescription())
+                .setLocation(order.getLocation())
+                .setTitle(order.getTitle())
+                .setUser(new User.Builder().setUsername(principal.getName()).build())
+                .build();
+        orderService.add(newOrder);
     }
 
     @PostMapping("/orders/claim")

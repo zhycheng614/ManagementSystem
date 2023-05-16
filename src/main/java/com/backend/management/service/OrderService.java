@@ -22,10 +22,10 @@ public class OrderService {
         this.userRepository = userRepository;
     }
     public List<Order> listByTenant(String username){
-        return orderRepository.findByTenant(new User.Builder().setUsername(username).build());
+        return orderRepository.findByUser(new User.Builder().setUsername(username).build());
     }
     public Order findByIdAndTenant(Long orderId, String username) throws OrderNotExistException {
-        Order order = orderRepository.findByIdAndTenant(orderId,new User.Builder().setUsername(username).build());
+        Order order = orderRepository.findByIdAndUser(orderId,new User.Builder().setUsername(username).build());
         if(order == null){
             throw new OrderNotExistException("Order DNE");
         }
@@ -41,7 +41,7 @@ public class OrderService {
     }
     @Transactional
     public void delete(Long orderId, String username)throws OrderNotExistException{
-        Order order = orderRepository.findByIdAndTenant(orderId,new User.Builder().setUsername(username).build());
+        Order order = orderRepository.findByIdAndUser(orderId,new User.Builder().setUsername(username).build());
         if(order == null){
             throw new OrderNotExistException("Order DNE");
         }

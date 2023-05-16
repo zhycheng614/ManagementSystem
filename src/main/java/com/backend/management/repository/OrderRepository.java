@@ -10,8 +10,8 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long>{
-    List<Order> findByTenant(User user);
-    Order findByIdAndTenant(Long id, User tenant);
+    List<Order> findByUser(User user);
+    Order findByIdAndUser(Long id, User user);
 
     @Query("SELECT u FROM Order u WHERE u.status = :status")
     List<Order> findAllByStatus(@Param("status") String status);
@@ -19,8 +19,8 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
     @Query("SELECT v FROM Order v WHERE v.provider = :provider")
     List<Order> findAllByProvider(@Param("provider") String provider);
 
-    @Query("SELECT z FROM Order z WHERE z.manager = :manager")
-    List<Order> findAllByManager(@Param("manager") String manager);
+    @Query("SELECT z FROM Order z WHERE z.username= :username")
+    List<Order> findAllByManager(@Param("username") String username);
 
     @Query("SELECT w FROM Order w WHERE w.provider = :provider AND w.status = :status")
     List<Order> findAllCompleteByProvider(@Param("provider") String provider,@Param("status") String status);

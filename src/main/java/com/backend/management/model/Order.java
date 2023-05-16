@@ -29,12 +29,12 @@ public class Order implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User tenant;
+    private User user;
 
 
     private String provider;
 
-    private String manager;
+    private String username;
 
     @JsonProperty("submit_date")
     private LocalDate submittedDate;
@@ -53,8 +53,8 @@ public class Order implements Serializable {
         this.issueDescription = builder.issueDescription;
         this.location = builder.location;
         this.tenantNumber = builder.tenantNumber;
-        this.tenant = builder.tenant;
-        this.manager = builder.manager;
+        this.user = builder.user;
+        this.username = builder.username;
         this.status = builder.status;
         this.providerNote = builder.providerNote;
         this.provider = builder.provider;
@@ -75,13 +75,18 @@ public class Order implements Serializable {
         return location;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Long getTenantNumber() {
         return tenantNumber;
     }
 
-    public User getTenant() {
-        return tenant;
-    }
 
     public void setProviderNote(String providerNote) {
         this.providerNote = providerNote;
@@ -111,6 +116,10 @@ public class Order implements Serializable {
         this.location = location;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public static class Builder {
 
         @JsonProperty("id")
@@ -122,8 +131,8 @@ public class Order implements Serializable {
         @JsonProperty("title")
         private String title;
 
-        @JsonProperty("manager")
-        private String manager;
+        @JsonProperty("username")
+        private String username;
 
         @JsonProperty("location")
         private String location;
@@ -132,7 +141,7 @@ public class Order implements Serializable {
         private Long tenantNumber;
 
         @JsonProperty("user")
-        private User tenant;
+        private User user;
         @JsonProperty("status")
         private String status;
 
@@ -174,8 +183,8 @@ public class Order implements Serializable {
             return this;
         }
 
-        public Builder setTenant(User tenant) {
-            this.tenant = tenant;
+        public Builder setUser(User user) {
+            this.user = user;
             return this;
         }
 
@@ -209,8 +218,8 @@ public class Order implements Serializable {
             return this;
         }
 
-        public Builder setManager(String manager) {
-            this.manager = manager;
+        public Builder setUsername(String username) {
+            this.username = username;
             return this;
         }
 
