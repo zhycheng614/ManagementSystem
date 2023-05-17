@@ -25,13 +25,13 @@ public class OrderController {
 
 
     //provider feature
-//    @GetMapping(value = "/orders/orderCompleted")
-//    public List<Order> listOrderCompletedByProvider(Principal principal) {
-//        return orderService.listCompleteByProvider(principal.getName());
-//    }
+    @GetMapping(value = "/orders/orderCompleted")
+    public List<Order> listOrderCompletedByProvider(Principal principal) {
+        return orderService.listCompleteByProvider(principal.getName());
+    }
     @GetMapping(value = "/orders/orderClaimed")
     public List<Order> listOrderClaimed(Principal principal) {
-        return orderService.listByProvider(principal.getName());
+        return orderService.listClaimedByProvider(principal.getName());
     }
     @PostMapping("/orders/claim")
     public void claimTask(Principal principal, @RequestParam(name = "order_id") Long OrderId, @RequestBody String note) {

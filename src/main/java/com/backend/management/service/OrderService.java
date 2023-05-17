@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -76,9 +77,26 @@ public class OrderService {
     public List<Order> listByProvider(String username){
         return orderRepository.findAllByProvider(new User.Builder().setUsername(username).build());
     }
-//    public List<Order> listCompleteByProvider(String username){
-//        return orderRepository.findAllCompleteByProvider(new User.Builder().setUsername(username).build(),"complete");
-//    }
+    public List<Order> listClaimedByProvider(String username){
+        List<Order> allList= listByProvider(username);
+        List<Order> result = new ArrayList<>();
+        for(Order order : allList){
+            if(order.getStatus().equals("In Progress")){
+                result.add(order);
+            }
+        }
+        return result;
+    }
+    public List<Order> listCompleteByProvider(String username){
+        List<Order> allList= listByProvider(username);
+        List<Order> result = new ArrayList<>();
+        for(Order order : allList){
+            if(order.getStatus().equals("complete")){
+                result.add(order);
+            }
+        }
+        return result;
+    }
 
 
 

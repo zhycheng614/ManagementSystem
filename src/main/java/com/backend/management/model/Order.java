@@ -115,7 +115,9 @@ public class Order implements Serializable {
         this.location = location;
     }
 
-
+    public String getStatus() {
+        return status;
+    }
 
     public static class Builder {
 

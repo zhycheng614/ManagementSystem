@@ -17,6 +17,8 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
     List<Order> findAllByStatus(@Param("status") String status);
 
     List<Order> findAllByProvider(User user);
+
+
 //    @Query("SELECT u FROM Order u WHERE u.status = :status")
 //    List<Order> findAllCompleteByProvider(User user,String status);
 }
