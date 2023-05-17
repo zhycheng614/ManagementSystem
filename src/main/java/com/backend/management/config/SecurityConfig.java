@@ -15,8 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.sql.DataSource;
 
-import javax.sql.DataSource;
-
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -33,8 +31,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/register/*").
                 permitAll().antMatchers(HttpMethod.POST, "/authenticate/*").permitAll().
-                antMatchers("/orders").permitAll()
+                antMatchers("/orders").hasAnyAuthority("ROLE_TENANT", "ROLE_MANAGER")
                 .antMatchers("/orders/*").permitAll()
+                .antMatchers("/announcements").hasAnyAuthority("ROLE_TENANT", "ROLE_MANAGER")
+                .antMatchers("/announcement/*").hasAuthority("ROLE_MANAGER")
+                .antMatchers("/announcement").hasAuthority("ROLE_MANAGER")
+                .antMatchers("/post").hasAuthority("ROLE_TENANT")
+                .antMatchers("/post/*").hasAuthority("ROLE_TENANT")
+                .antMatchers("/posts").hasAnyAuthority("ROLE_TENANT", "ROLE_MANAGER")
                 .antMatchers("/moveIn").hasAuthority("ROLE_MANAGER")
                 .antMatchers("/moveInAndAssignNewOwner").hasAuthority("ROLE_MANAGER")
                 .antMatchers("/moveOut").hasAuthority("ROLE_MANAGER")
@@ -51,11 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     // 这个是spring security帮我们自动验证user数据
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -63,6 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder())
                 .usersByUsernameQuery("SELECT username, password, enabled FROM user WHERE username = ?")
                 .authoritiesByUsernameQuery("SELECT username, authority FROM authority WHERE username = ?");
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     // 这里我们手动override成bean，这样这个验证管理器就可以被我们service使用
