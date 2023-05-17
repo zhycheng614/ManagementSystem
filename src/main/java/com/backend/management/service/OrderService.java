@@ -71,7 +71,6 @@ public class OrderService {
     public void completeTask(Long id) {
         Order task = orderRepository.getById(id);
         task.setStatus("complete");
-        task.setProviderNote("it's fixed!");
         task.setCompleteDate(LocalDate.now());
     }
     public List<Order> listByProvider(String username){
