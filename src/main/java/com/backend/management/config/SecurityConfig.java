@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
+    protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/register/*").
                 permitAll().antMatchers(HttpMethod.POST, "/authenticate/*").permitAll().
                 antMatchers("/orders").hasAnyAuthority("ROLE_TENANT", "ROLE_MANAGER")
@@ -44,8 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/moveOut").hasAuthority("ROLE_MANAGER")
                 .antMatchers("/moveOutAndAssignNewOwner").hasAuthority("ROLE_MANAGER")
                 .antMatchers("/getFlatmates").hasAuthority("ROLE_MANAGER")
+                .antMatchers("/reservation").hasAnyAuthority("ROLE_TENANT","ROLE_MANAGER")
+                .antMatchers("/reservation/*").hasAnyAuthority("ROLE_TENANT", "ROLE_MANAGER")
+                .antMatchers("/reservations").hasAnyAuthority("ROLE_TENANT", "ROLE_MANAGER")
                 .anyRequest().authenticated().and().csrf().disable();
-
         http
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -61,24 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usersByUsernameQuery("SELECT username, password, enabled FROM user WHERE username = ?")
                 .authoritiesByUsernameQuery("SELECT username, authority FROM authority WHERE username = ?");
     }
-//
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception{
-//        http.authorizeRequests().antMatchers(HttpMethod.POST, "/register/*").
-//                permitAll().antMatchers(HttpMethod.POST, "/authenticate/*").permitAll()
-//                .antMatchers("/orders").permitAll()
-//                .antMatchers("/orders/*").permitAll()
-//
-//                .anyRequest().authenticated().and().csrf().disable();
-//
-//        http
-//                .sessionManagement()   //获取会话管理器
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  //设置会话管理器状态为stateless，即无状态会话
-//                .and()    //使用and()方法连接下一个配置
-//                //向过滤器链中添加自定义的JwtFilter，并指定在UsernamePasswordAuthenticationFilter之前添加
-//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-//    }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
