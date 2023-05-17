@@ -24,7 +24,6 @@ public class Amenity implements Serializable {
     private Amenity(Builder builder){
 
         this.amenity_id = amenity_id;
-
         this.amenity_name = amenity_name;
         this.amenity_capacity = amenity_capacity;
         this.amenity_image = amenity_image;

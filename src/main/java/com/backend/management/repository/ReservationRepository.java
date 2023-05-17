@@ -2,6 +2,7 @@ package com.backend.management.repository;
 
 import com.backend.management.model.Reservation;
 import com.backend.management.model.User;
+import com.backend.management.model.vo.ReservationVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    @Query(value = "SELECT res FROM Reservation res WHERE res.user_id = ?1")
+    @Query(value = "SELECT res FROM Reservation res WHERE res.user_id = ?1 order by res.date desc")
     List<Reservation> findByRequester(String requester_id);
 
     @Query(value = "SELECT res FROM Reservation res WHERE   res.reservation_id = ?1 AND res.user_id = ?2 ")
@@ -23,5 +24,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Modifying
     @Query(value = "delete from Reservation res where res.reservation_id =?1")
     int deleteByReservation_id(Integer reservation_id);
+
+    @Query(value = "SELECT res FROM Reservation res WHERE res.date = ?1 AND res.start_time = ?2 AND res.end_time = ?3 and res.amenity_id=?4")
+    Reservation findReservationByDateAndAmenityStarttimeAndEndTime(String date, String startTime, String endTime, String amenityid);
 }
 

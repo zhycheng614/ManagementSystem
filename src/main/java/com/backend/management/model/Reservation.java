@@ -34,15 +34,16 @@ public class Reservation implements Serializable {
 
     @JsonProperty("guestCount")
     private int guest_count;
-    private LocalDate date;
+    private String date;
     @JsonProperty("startTime")
-    private int start_time;
+    private String start_time;
     @JsonProperty("endTime")
-    private int end_time;
+    private String end_time;
 
-    public Reservation() {}
+    public Reservation() {
+    }
 
-    private Reservation(Builder builder){
+    private Reservation(Builder builder) {
         this.reservation_id = builder.reservation_id;
         this.reservation_name = builder.reservation_name;
         this.amenity = builder.amenity;
@@ -53,7 +54,6 @@ public class Reservation implements Serializable {
         this.end_time = builder.end_time;
         this.user_id = builder.userId;
         this.amenity_id = builder.amenityId;
-        this.end_time = builder.end_time;
 
     }
 
@@ -65,13 +65,15 @@ public class Reservation implements Serializable {
         return user_id;
     }
 
-    public int getReservationID(){
+    public int getReservationID() {
         return reservation_id;
     }
-    public String getReservationName(){
+
+    public String getReservationName() {
         return reservation_name;
     }
-    public Amenity getAmenityID(){
+
+    public Amenity getAmenityID() {
         return amenity;
     }
 //     public User setUser(User username){
@@ -79,24 +81,27 @@ public class Reservation implements Serializable {
 //        return this;
 //    }
 
-    public int getGuestCount(){
+    public int getGuestCount() {
         return guest_count;
     }
-    public LocalDate getDate(){
+
+    public String getDate() {
         return date;
     }
-    public int getStartTime(){
+
+    public String getStartTime() {
         return start_time;
     }
-    public int getEndTime(){
+
+    public String getEndTime() {
         return end_time;
     }
 
-    public void setDate(LocalDate date){
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public static class Builder{
+    public static class Builder {
         @JsonProperty("reservationId")
         private int reservation_id;
         @JsonProperty("reservationName")
@@ -108,56 +113,67 @@ public class Reservation implements Serializable {
         @JsonProperty("guestCount")
         private int guest_count;
         @JsonProperty("date")
-        private LocalDate date;
+        private String date;
         @JsonProperty("startTime")
-        private int start_time;
+        private String start_time;
         @JsonProperty("endTime")
-        private int end_time;
+        private String end_time;
         @JsonProperty("userId")
         private String userId;
         @JsonProperty("amenityId")
         private String amenityId;
+
         public Builder setReservationName(int reservation_id) {
             this.reservation_id = reservation_id;
             return this;
         }
-        public Builder setReservationName(String reservation_name){
+
+        public Builder setReservationName(String reservation_name) {
             this.reservation_name = reservation_name;
             return this;
         }
-        public Builder setRequesterID(User requester_id){
+
+        public Builder setRequesterID(User requester_id) {
             this.requester_id = requester_id;
             return this;
         }
-        public Builder setUserId(String userId){
+
+        public Builder setUserId(String userId) {
             this.userId = userId;
             return this;
         }
-        public Builder setAmenityId(String amenityId){
+
+        public Builder setAmenityId(String amenityId) {
             this.amenityId = amenityId;
             return this;
         }
-        public Builder setAmenityID(Amenity amenity_id){
+
+        public Builder setAmenityID(Amenity amenity_id) {
             this.amenity = amenity_id;
             return this;
         }
-        public Builder setGuestCount(int guest_count){
+
+        public Builder setGuestCount(int guest_count) {
             this.guest_count = guest_count;
             return this;
         }
-        public Builder setDate(LocalDate date){
+
+        public Builder setDate(String date) {
             this.date = date;
             return this;
         }
-        public Builder setStartTime(int start_time){
+
+        public Builder setStartTime(String start_time) {
             this.start_time = start_time;
             return this;
         }
-        public Builder setEndTime(int end_time){
+
+        public Builder setEndTime(String end_time) {
             this.end_time = end_time;
             return this;
         }
-        public Reservation build(){
+
+        public Reservation build() {
             return new Reservation(this);
         }
     }

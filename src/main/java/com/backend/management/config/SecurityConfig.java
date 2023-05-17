@@ -28,8 +28,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.dataSource = dataSource;
         this.jwtFilter = jwtFilter;
     }
+
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
+    protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/register/*").
                 permitAll().antMatchers(HttpMethod.POST, "/authenticate/*").permitAll().
                 antMatchers("/orders").permitAll()
@@ -39,16 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/moveOut").hasAuthority("ROLE_MANAGER")
                 .antMatchers("/moveOutAndAssignNewOwner").hasAuthority("ROLE_MANAGER")
                 .antMatchers("/getFlatmates").hasAuthority("ROLE_MANAGER")
-<<<<<<< HEAD
                 .antMatchers("/reservation").hasAnyAuthority("ROLE_TENANT","ROLE_MANAGER")
-                .antMatchers("/reservation/*").hasAnyAuthority("ROLE_TENANT","ROLE_MANAGER")
-                .antMatchers("/reservations").hasAnyAuthority("ROLE_TENANT","ROLE_MANAGER")
-=======
-                .antMatchers("/reservation").hasAuthority("ROLE_MANAGER")
-                .antMatchers("reservation/*").hasAuthority("ROLE_MANAGER")
->>>>>>> cab2345f4f97c98ec045473891fd2c638c46ff45
+                .antMatchers("/reservation/*").hasAnyAuthority("ROLE_TENANT", "ROLE_MANAGER")
+                .antMatchers("/reservations").hasAnyAuthority("ROLE_TENANT", "ROLE_MANAGER")
                 .anyRequest().authenticated().and().csrf().disable();
-
         http
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -69,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usersByUsernameQuery("SELECT username, password, enabled FROM user WHERE username = ?")
                 .authoritiesByUsernameQuery("SELECT username, authority FROM authority WHERE username = ?");
     }
+
     // 这里我们手动override成bean，这样这个验证管理器就可以被我们service使用
     @Override
     @Bean
