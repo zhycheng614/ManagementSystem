@@ -18,6 +18,6 @@ public class AmenityService {
     }
 
     public List<Amenity> list() {
-       return amenityRepository.findByAmenityName();
+        return amenityRepository.findByAmenityName();
     }
 }

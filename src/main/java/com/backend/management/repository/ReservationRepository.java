@@ -17,8 +17,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query(value = "SELECT res FROM Reservation res WHERE res.user_id = ?1 order by res.date desc")
     List<Reservation> findByRequester(String requester_id);
 
-    @Query(value = "SELECT res FROM Reservation res WHERE   res.reservation_id = ?1 AND res.user_id = ?2 ")
-    Reservation findByReservationAndRequester(int reservation_id, String requester_id);
+    @Query(value = "SELECT res FROM Reservation res order by res.date desc")
+    List<Reservation> findByToday();
+
+    @Query(value = "SELECT res FROM Reservation res WHERE   res.reservation_id = ?1")
+    Reservation findByReservationAndRequester(int reservation_id);
 
     //Reservation findByReservation_idAndRequester_id(int reservation_id, User requester_id); // for deletion
     @Modifying
@@ -27,5 +30,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     @Query(value = "SELECT res FROM Reservation res WHERE res.date = ?1 AND res.start_time = ?2 AND res.end_time = ?3 and res.amenity_id=?4")
     Reservation findReservationByDateAndAmenityStarttimeAndEndTime(String date, String startTime, String endTime, String amenityid);
+
+
+
+    @Query(value = "SELECT  authority FROM authority WHERE username = ?1", nativeQuery = true)
+    String getAuth(String username);
 }
 

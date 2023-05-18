@@ -43,6 +43,7 @@ public class Reservation implements Serializable {
     public Reservation() {
     }
 
+
     private Reservation(Builder builder) {
         this.reservation_id = builder.reservation_id;
         this.reservation_name = builder.reservation_name;
@@ -55,6 +56,10 @@ public class Reservation implements Serializable {
         this.user_id = builder.userId;
         this.amenity_id = builder.amenityId;
 
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     public String getAmenity_id() {
