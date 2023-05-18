@@ -2,8 +2,10 @@ package com.backend.management.service;
 
 import com.backend.management.exception.ReservationCollisionException;
 import com.backend.management.exception.ReservationNotFoundException;
+import com.backend.management.model.Amenity;
 import com.backend.management.model.Reservation;
 import com.backend.management.model.User;
+import com.backend.management.model.vo.AmenityVo;
 import com.backend.management.model.vo.ReservationVo;
 
 import com.backend.management.repository.ReservationRepository;
@@ -11,8 +13,10 @@ import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -22,48 +26,50 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
 
     @Autowired
+    private AmenityService amenityService;
+
+    @Autowired
     public ReservationService(ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;
     }
 
-    public Map<Integer, List<ReservationVo>> listByToday(User username) {
-        Map<Integer, List<ReservationVo>> hashMap = new HashMap<>();
-        List<ReservationVo> voList = new ArrayList<>();
-        List<Reservation> byRequester = reservationRepository.findByRequester(username.getUsername());
-        for (Reservation reservation : byRequester) {
-            ReservationVo reservationVo = new ReservationVo();
-            reservationVo.setReservation_id(reservation.getReservationID());
-            reservationVo.setStartTime(reservation.getStartTime());
-            reservationVo.setEndTime(reservation.getEndTime());
-            String date = reservation.getDate();
-//            大于date
-            LocalDate now = LocalDate.now();
-            LocalDate parse = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            if (parse.isAfter(now)) {
-                reservationVo.setDate(date);
-                voList.add(reservationVo);
-            }
-            reservationVo.setAmenityId(Integer.parseInt(reservation.getAmenity_id()));
-        }
-//        按照amenityId分组
-        for (ReservationVo reservationVo : voList) {
-            Integer amenityId = reservationVo.getAmenityId();
-            if (hashMap.containsKey(amenityId)) {
-                List<ReservationVo> reservationVos = hashMap.get(amenityId);
-                reservationVos.add(reservationVo);
-                hashMap.put(amenityId, reservationVos);
-            } else {
+    public List<AmenityVo> listByToday(User username) {
+        List<Amenity> amenityList = amenityService.list();
+//        String user = reservationRepository.getAuth(username.getUsername());
+        List<Reservation> byRequester = reservationRepository.findByToday();
+
+//        amenity_id按照id分组<map, list>
+        Map<String, List<Reservation>> map = byRequester.stream().collect(
+                java.util.stream.Collectors.groupingBy(Reservation::getAmenity_id));
+
+        List<AmenityVo> amenityVos = new ArrayList<>();
+        for (Amenity amenity : amenityList) {
+            AmenityVo amenityVo = new AmenityVo();
+            amenityVo.setAmenityId(amenity.getAmenityID());
+            amenityVo.setAmenityName(amenity.getAmenityName());
+            List<Reservation> reservations = map.get(amenity.getAmenityID() + "");
+            if (!CollectionUtils.isEmpty(reservations)) {
                 List<ReservationVo> reservationVos = new ArrayList<>();
-                reservationVos.add(reservationVo);
-                hashMap.put(amenityId, reservationVos);
+                for (Reservation reservation : reservations) {
+                    ReservationVo reservationVo = new ReservationVo();
+                    reservationVo.setReservation_id(reservation.getReservationID());
+                    reservationVo.setReservation_name(reservation.getReservationName());
+                    reservationVo.setStartTime(reservation.getStartTime());
+                    reservationVo.setEndTime(reservation.getEndTime());
+                    reservationVo.setDate(reservation.getDate());
+                    reservationVo.setUserId(reservation.getUser_id());
+                    reservationVos.add(reservationVo);
+                }
+                amenityVo.setChildrenList(reservationVos);
+                amenityVos.add(amenityVo);
             }
         }
-        return hashMap;
+        return amenityVos;
     }
 
     //1.get reservation by id
     public Reservation findByIdAndUsername(int reservation_id, User username) throws ReservationNotFoundException {
-        Reservation reservation = reservationRepository.findByReservationAndRequester(reservation_id, username.getUsername());
+        Reservation reservation = reservationRepository.findByReservationAndRequester(reservation_id);
         if (reservation == null) {
             throw new ReservationNotFoundException("Reservation not found");
         }
@@ -72,7 +78,7 @@ public class ReservationService {
 
     //2.Add reservation
     @Transactional
-    public void add(List<Reservation> reservation) throws ReservationCollisionException {
+    public void add(List<Reservation> reservation, Principal principal) throws ReservationCollisionException {
         for (Reservation reservation1 : reservation) {
             Reservation reservation2 = reservationRepository.
                     findReservationByDateAndAmenityStarttimeAndEndTime(
@@ -80,6 +86,7 @@ public class ReservationService {
             if (reservation2 != null) {
                 throw new ReservationCollisionException("Reservation collision");
             }
+            reservation1.setUser_id(principal.getName());
             reservationRepository.save(reservation1);
         }
     }
@@ -101,6 +108,7 @@ public class ReservationService {
             reservationVo.setReservation_id(reservation.getReservationID());
             reservationVo.setStartTime(reservation.getStartTime());
             reservationVo.setEndTime(reservation.getEndTime());
+            reservationVo.setReservation_name(reservation.getReservationName());
 //            date转为 yyyy-MM-dee
             reservationVo.setDate(reservation.getDate());
             voList.add(reservationVo);

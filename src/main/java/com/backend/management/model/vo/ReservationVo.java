@@ -22,7 +22,18 @@ public class ReservationVo implements Serializable {
     @JsonProperty("date")
     private String date;
 
+    private String userId;
+
     private Integer amenityId;
+
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public Integer getAmenityId() {
         return amenityId;
