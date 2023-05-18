@@ -130,9 +130,6 @@ public class Order implements Serializable {
         @JsonProperty("location")
         private String location;
 
-        @JsonProperty("tenant_number")
-        private Long tenantNumber;
-
         @JsonProperty("user")
         private User user;
         @JsonProperty("status")
@@ -171,10 +168,6 @@ public class Order implements Serializable {
             return this;
         }
 
-        public Builder setTenantNumber(Long tenantNumber) {
-            this.tenantNumber = tenantNumber;
-            return this;
-        }
 
         public Builder setUser(User user) {
             this.user = user;
