@@ -51,7 +51,6 @@ public class Order implements Serializable {
         this.title = builder.title;
         this.issueDescription = builder.issueDescription;
         this.location = builder.location;
-
         this.user = builder.user;
         this.status = builder.status;
         this.providerNote = builder.providerNote;
@@ -80,6 +79,7 @@ public class Order implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
 
     public void setProviderNote(String providerNote) {
         this.providerNote = providerNote;
