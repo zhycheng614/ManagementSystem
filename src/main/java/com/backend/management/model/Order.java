@@ -20,8 +20,7 @@ public class Order implements Serializable {
     private String title;
     private String issueDescription;
     private String location;
-//    @JsonProperty("tenant_number")
-//    private Long tenantNumber;
+
     @JsonProperty("status")
     private String status;
     @JsonProperty("message")
@@ -52,7 +51,7 @@ public class Order implements Serializable {
         this.title = builder.title;
         this.issueDescription = builder.issueDescription;
         this.location = builder.location;
-//        this.tenantNumber = builder.tenantNumber;
+
         this.user = builder.user;
         this.status = builder.status;
         this.providerNote = builder.providerNote;
@@ -82,9 +81,6 @@ public class Order implements Serializable {
         this.user = user;
     }
 
-//    public Long getTenantNumber() {
-//        return tenantNumber;
-//    }
 
 
     public void setProviderNote(String providerNote) {
