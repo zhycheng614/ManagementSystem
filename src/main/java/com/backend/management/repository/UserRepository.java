@@ -15,5 +15,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     List<User> getOccupants(
             @Param("apartment_number") String apartmentNumber);
 
+    @Query ("SELECT u FROM User u where u.apartmentNumber=NULL")
+    List<User> getTenantsWithoutApartments();
+
 }
 
