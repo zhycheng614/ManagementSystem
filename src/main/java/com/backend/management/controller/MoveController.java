@@ -1,19 +1,12 @@
 package com.backend.management.controller;
 
-import com.backend.management.model.User;
-import com.backend.management.model.UserRole;
 import com.backend.management.service.MoveService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -49,5 +42,24 @@ public class MoveController {
     @GetMapping("getFlatmates")
     public Set<String> getFlatmates(String username) {
         return moveService.getFlatmates(username);
+    }
+
+    @GetMapping("findApartmentsWithVacancy")
+    public List<String> findApartmentsWithVacancy() {return moveService.findApartmentsWithVacancy(); }
+
+    @GetMapping("getTenantsWithoutApartments")
+    public List<String> getTenantsWithoutApartments() {return moveService.getTenantsWithoutApartments();}
+
+    @GetMapping("getTenantsWithApartments")
+    public List<String> getTenantsWithApartments() {return moveService.getTenantsWithApartments();}
+
+    @GetMapping("getApartmentInfoByUsername")
+    public MoveService.ApartmentInfo getApartmentInfoByUsername(String username) {
+        return moveService.getApartmentAndTenantsByUsername(username);
+    }
+
+    @GetMapping("getApartmentInfoByApartmentNumber")
+    public MoveService.ApartmentInfo getApartmentInfoByApartmentNumber(String apartmentNumber) {
+        return moveService.getApartmentAndTenantsByApartmentNumber(apartmentNumber);
     }
 }

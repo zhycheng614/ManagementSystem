@@ -48,4 +48,9 @@ public class OwnExceptionHandler {
     public final ResponseEntity<String> handleInvalidMoveException(Exception ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ApartmentNotExistException.class)
+    public final ResponseEntity<String> handleApartmentNotExistException(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }
