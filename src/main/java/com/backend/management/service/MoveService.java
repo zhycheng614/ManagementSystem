@@ -6,11 +6,10 @@ import com.backend.management.model.User;
 import com.backend.management.repository.ApartmentRepository;
 import com.backend.management.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -62,6 +61,11 @@ public class MoveService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void moveOutAndAssignNewOwner(String username, String newOwner) {
         move(username, null, newOwner);
+    }
+
+    public List<String> findApartmentsWithVacancy(){
+        List<Apartment> apartments = apartmentRepository.apartmentsWithVacancy();
+        return apartments.stream().map(Apartment::getApartmentId).collect(Collectors.toSet()).stream().sorted().collect(Collectors.toList());
     }
 
     private void move(String username, String newApartmentNumber, String newOwnerUsername) {

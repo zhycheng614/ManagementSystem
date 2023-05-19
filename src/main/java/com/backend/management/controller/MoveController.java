@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -50,4 +51,7 @@ public class MoveController {
     public Set<String> getFlatmates(String username) {
         return moveService.getFlatmates(username);
     }
+
+    @GetMapping("findApartmentsWithVacancy")
+    public List<String> findApartmentsWithVacancy() {return moveService.findApartmentsWithVacancy(); }
 }
