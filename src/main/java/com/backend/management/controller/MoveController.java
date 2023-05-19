@@ -57,4 +57,7 @@ public class MoveController {
 
     @GetMapping("getTenantsWithoutApartments")
     public List<String> getTenantsWithoutApartments() {return moveService.getTenantsWithoutApartments();}
+
+    @GetMapping("getTenantsWithApartments")
+    public List<String> getTenantsWithApartments() {return moveService.getTenantsWithApartments();}
 }

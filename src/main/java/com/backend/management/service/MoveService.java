@@ -73,6 +73,10 @@ public class MoveService {
         return tenant.stream().map(User::getUsername).collect(Collectors.toSet()).stream().sorted().collect(Collectors.toList());
     }
 
+    public List<String> getTenantsWithApartments() {
+        List<User> tenant = userRepository.getTenantsWithApartments();
+        return tenant.stream().map(User::getUsername).collect(Collectors.toSet()).stream().sorted().collect(Collectors.toList());
+    }
     private void move(String username, String newApartmentNumber, String newOwnerUsername) {
         Optional<User> userOptional = userRepository.findById(username);
         if (userOptional.isEmpty()) {
