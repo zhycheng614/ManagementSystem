@@ -92,4 +92,27 @@ public class InvoiceService {
             }
         }
     }
+
+    public void addCategory(Invoice invoice, String managerId, String apartType, String invoiceType) {
+        if (invoice != null) {
+            List<Apartment> apartments = apartmentRepository.findAll();
+            for (Apartment apartment : apartments) {
+                if (apartment.getOwnerId() != null && apartment.getApartmentType().getTypeId().equalsIgnoreCase(apartType)) {
+                    Invoice newInvoice = new Invoice();
+                    newInvoice.setDueDate(invoice.getDueDate());
+                    if (invoiceType.equalsIgnoreCase("rent")) {
+                        newInvoice.setInvoiceName("rent");
+                        newInvoice.setAmount(apartment.getApartmentType().getRent().doubleValue());
+                    } else if (invoiceType.equalsIgnoreCase("management fee")) {
+                        newInvoice.setInvoiceName("management fee");
+                        newInvoice.setAmount(apartment.getApartmentType().getManagementFee().doubleValue());
+                    } else {
+                        newInvoice.setInvoiceName(invoice.getInvoiceName());
+                        newInvoice.setAmount(invoice.getAmount());
+                    }
+                    add(newInvoice, managerId, apartment.getOwnerId().getUsername());
+                }
+            }
+        }
+    }
 }
