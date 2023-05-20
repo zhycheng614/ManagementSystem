@@ -50,6 +50,16 @@ public class ReservationController {
         return reservationService.listByToday(user);
     }
 
+    @GetMapping(value = "/reservation/date")
+    public List<ReservationVo> listByDate(
+            @RequestParam(value = "date") String date,
+            @RequestParam(value = "amenity_id") String amenity_id,
+            Principal principal
+    ) {
+        User user = new User.Builder().setUsername(principal.getName()).build();
+        return reservationService.listByDate(date, user, amenity_id);
+    }
+
     //2. get reservation by id
     @GetMapping(value = "/reservation/id")
     public Reservation getReservationId(
