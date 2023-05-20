@@ -115,4 +115,20 @@ public class ReservationService {
         }
         return voList;
     }
+
+    public List<ReservationVo> listByDate(String date, User user, String amenity_id) {
+        List<ReservationVo> voList = new ArrayList<>();
+        List<Reservation> byRequester = reservationRepository.findByDate(date,amenity_id);
+        for (Reservation reservation : byRequester) {
+            ReservationVo reservationVo = new ReservationVo();
+            reservationVo.setReservation_id(reservation.getReservationID());
+            reservationVo.setStartTime(reservation.getStartTime());
+            reservationVo.setEndTime(reservation.getEndTime());
+            reservationVo.setReservation_name(reservation.getReservationName());
+//            date转为 yyyy-MM-dee
+            reservationVo.setDate(reservation.getDate());
+            voList.add(reservationVo);
+        }
+        return voList;
+    }
 }

@@ -31,9 +31,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query(value = "SELECT res FROM Reservation res WHERE res.date = ?1 AND res.start_time = ?2 AND res.end_time = ?3 and res.amenity_id=?4")
     Reservation findReservationByDateAndAmenityStarttimeAndEndTime(String date, String startTime, String endTime, String amenityid);
 
-
-
     @Query(value = "SELECT  authority FROM authority WHERE username = ?1", nativeQuery = true)
     String getAuth(String username);
+
+    @Query(value = "SELECT res FROM Reservation res WHERE res.date = ?1 and res.amenity_id=?2")
+    List<Reservation> findByDate(String date, String amenity_id);
 }
 
