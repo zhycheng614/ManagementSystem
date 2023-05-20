@@ -76,6 +76,7 @@ public class MoveService {
         return tenant.stream().map(User::getUsername).collect(Collectors.toSet()).stream().sorted().collect(Collectors.toList());
     }
 
+    //TODO: make a record?
     public static class ApartmentInfo {
 
         public final String apartmentNumber;
@@ -132,6 +133,7 @@ public class MoveService {
 
         List<Object[]> apartmentAndTenants = apartmentRepository.getApartmentAndTenantByUsername(username);
 
+        //TODO: simplify this
         if (apartmentAndTenants.size() == 0) {
             User user = userRepository.findById(username).orElse(null);
             if (user == null || user.getApartmentNumber() == null) {
